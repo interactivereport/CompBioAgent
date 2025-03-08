@@ -1,0 +1,9 @@
+<?php
+
+$APP_CONFIG['VERSION']['PRODUCT'] 						= '2025-03-08';
+$APP_CONFIG['VERSION']['TEMPLATE_DATABASE_INSTALLED'] 	= '2025-03-07';
+$APP_CONFIG['VERSION']['DATABASE'] 						= '2025-03-07';
+$APP_CONFIG['VERSION']['CACHE']							= '2025-03-07 00:00';
+$APP_CONFIG['VERSION']['Human'] 						= date('F d, Y', strtotime($APP_CONFIG['VERSION']['PRODUCT']));
+
+?>
