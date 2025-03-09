@@ -1,4 +1,4 @@
-# ![CompBioAgent](https://github.com/interactivereport/CompBioAgent/blob/main/CompBioAgent_logo.png) CompBioAgent
+# ![CompBioAgent](https://github.com/interactivereport/CompBioAgent/blob/main/CompBioAgent_logo.png)
 
 Live Demo: https://celldepot.bxgenomics.com/compbioagent/
 
