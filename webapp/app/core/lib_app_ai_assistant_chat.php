@@ -198,7 +198,7 @@ function get_ai_assistant_chat_v2_nat2json_step3($inputArray = NULL, $options = 
 	$options['titlefontsize'] 	= abs(intval($options['titlefontsize']));
 
 
-	$options['vscale']	= $inputArray['Answers']['Action for query results']['scRNA-Seq']['plot options']['layout'];
+	$options['yscale']	= $inputArray['Answers']['Action for query results']['scRNA-Seq']['plot options']['layout'];
 
 	$results['json']['var_col'] = '';
 
@@ -335,7 +335,7 @@ function get_ai_assistant_chat_v2_nat2json_step3($inputArray = NULL, $options = 
 		$results['json']['options']['img_id'] 			= '';
 		$results['json']['options']['img_format']		= 'png';
 		$results['json']['options']['img_html'] 		= false;
-		$results['json']['options']['vscale'] 			= $options['vscale'];
+		$results['json']['options']['yscale'] 			= $options['yscale'];
 		$results['json']['options']['titlefontsize'] 	= $options['titlefontsize'];
 		$results['json']['options']['dotcolor']			= '#008';
 	}
