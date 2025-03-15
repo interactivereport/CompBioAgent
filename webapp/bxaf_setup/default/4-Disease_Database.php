@@ -38,6 +38,10 @@ $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']["Alzheimer's Disease (AD)"
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']["Alzheimer's Disease (AD)"]['File_Slim']		
 	= '/data/c2876b1b-06d8-4d96-a56b-5304f815b99a_slim.h5ad';
 	
+//If the dataset was downloaded from CZI, please set the value to true.
+$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']["Alzheimer's Disease (AD)"]['Download_From_CZI'] 
+	= true;
+	
 //Sometimes, the LLM may return a non-standard disease name. It is ncessary to include the nick names here.
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']["Alzheimer's Disease (AD)"]['Alias'][] = "Alzheimer's Disease";
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']["Alzheimer's Disease (AD)"]['Alias'][] = 'Alzheimers';
@@ -63,6 +67,7 @@ $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Cutaneous lupus erythemat
  	= '/data/GSE186476.h5ad';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Cutaneous lupus erythematosus (CLE)']['File_Slim']		
  	= '/data/GSE186476_slim.h5ad';
+$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Cutaneous Lupus Erythematosus (CLE)']['Download_From_CZI'] = false;
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Cutaneous Lupus Erythematosus (CLE)']['Alias'][] = 'Cutaneous Lupus Erythematosus';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Cutaneous Lupus Erythematosus (CLE)']['Alias'][] = 'CLE';
 
@@ -80,11 +85,12 @@ $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Glaucoma']['URL_Cellxgene
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Glaucoma']['Project_Column_Mapping']['Cell Type'] 
 	= 'Cluster';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Glaucoma']['Project_Column_Mapping']['Disease']   
-	= 'NA';
+	= 'Disease';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Glaucoma']['File_Raw']		
 	= '/data/SCP780.h5ad';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Glaucoma']['File_Slim']		
 	= '/data/SCP780_slim.h5ad';
+$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Glaucoma']['Download_From_CZI'] = false;
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Glaucoma']['Alias'] = array();
 	
 	
@@ -108,26 +114,7 @@ $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Multiple Sclerosis (MS)']
 	= '/data/ms_nature_2019_rowitch_LLM_slim.h5ad';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Multiple Sclerosis (MS)']['Alias'][] = 'Multiple Sclerosis';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Multiple Sclerosis (MS)']['Alias'][] = 'MS';
-
-
-//Example
-//Ocular Disease
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)'] = array();
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['URL_About']
-   	= 'https://app.bxgenomics.com/bxg/app/scrnaview/app_project_review.php?ID=410';
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['URL_CellxgeneVIP']
-   	= 'https://app.bxgenomics.com/bxg/app/scrnaview/app_project_launcher.php?ID=410';
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['Project_Column_Mapping']['Cell Type'] 
-	= 'Cell_type_full';
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['Project_Column_Mapping']['Disease']   
-	= 'NA';
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['File_Raw']		
-	= '/data/SCP484.h5ad';
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['File_Slim']		
-	= '/data/SCP484_slim.h5ad';
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['Alias'][] = 'Ocular Disease';
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['Alias'][] = 'Ocular';
-$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Ocular Disease (OD)']['Alias'][] = 'OD';
+$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Multiple Sclerosis (MS)']['Download_From_CZI'] = false;
 
 
 //Systemic lupus erythematosus (SLE)
@@ -147,6 +134,7 @@ $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Systemic lupus erythemato
 	= '/data/GSE137029_v3_slim.h5ad';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Systemic Lupus Erythematosus (SLE)']['Alias'][] = 'Systemic Lupus Erythematosus';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Systemic Lupus Erythematosus (SLE)']['Alias'][] = 'SLE';
+$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Systemic Lupus Erythematosus (SLE)']['Download_From_CZI'] = false;
 
 
 //Diabetes
@@ -158,14 +146,14 @@ $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Diabetes']['URL_Cellxgene
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Diabetes']['Project_Column_Mapping']['Cell Type'] 
 	= 'C1_named';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Diabetes']['Project_Column_Mapping']['Disease']   
-	= 'NA';
+	= 'Disease';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Diabetes']['File_Raw']		
 	= '/data/d3504c65-42cd-4629-af87-2cc4547ce65b.h5ad';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Diabetes']['File_Slim']		
 	= '/data/d3504c65-42cd-4629-af87-2cc4547ce65b_slim.h5ad';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Diabetes']['Alias'][] = 'Type 1 Diabetes';
 $BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Diabetes']['Alias'][] = 'Type 2 Diabetes';
-
+$BXAF_CONFIG_CUSTOM['SETTINGS']['data']['By-Disease']['Diabetes']['Download_From_CZI'] = true;
 
 
 //Keep in mind that if you've added any disease, you will need to modify the prompt function:

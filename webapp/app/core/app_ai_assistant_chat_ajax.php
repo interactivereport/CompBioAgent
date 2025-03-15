@@ -3,7 +3,13 @@
 include('config_init.php');
 
 $query = trim_x($_POST['query']);
-$debug = 0;
+
+
+if ($BXAF_CONFIG['Debug']){
+	$debug = true;	
+} else {
+	$debug = false;	
+}
 
 if ($query == ''){
 	$message = "<p>" . printFontAwesomeIcon('fas fa-exclamation-triangle text-danger') . " Error. Please enter something and try again.</p>";
@@ -54,13 +60,20 @@ if ($h5ad_image_results['results_raw'] == ''){
 }
 
 
+if ($debug){
+	echo printMsg("Plot Command:");
+	$temp = $h5ad_image_results;
+	unset($temp['results_raw']);
+	echo printrExpress($temp);
+}
+
 
 echo "<div class='py-3'>";
 	
 	$actions = array();
 	
 	if ($h5ad_input['search_results']['disease'] != ''){
-		$actions[] = "Query Disease: {$h5ad_input['search_results']['disease']}";
+		$actions[] = printFontAwesomeIcon("far fa-question-circle") . " Query Disease: {$h5ad_input['search_results']['disease']}";
 	}
 	
 	$URL = $h5ad_input['search_results']['disease_info']['URL_About'];

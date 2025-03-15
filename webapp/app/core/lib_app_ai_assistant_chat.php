@@ -34,7 +34,13 @@ function get_ai_assistant_chat_v2_nat2json_step1($prompt = NULL, $options = NULL
 	$json_input = $function_preparePromptInput($model, $prompt, $function_formatPrompt, $options);
 	if ($json_input == '') return false;
 	
-	$cmd_results	= trim_x(get_ai_assistant_command_from_database(1, $json_input));
+	
+	
+	if ($BXAF_CONFIG['LLM_Cache_Enable']){
+		$cmd_results	= trim_x(get_ai_assistant_command_from_database(1, $json_input));
+	} else {
+		$cmd_results 	= '';	
+	}
 	
 	if ($cmd_results == ''){
 		
@@ -81,10 +87,6 @@ function get_ai_assistant_chat_v2_nat2json_step1($prompt = NULL, $options = NULL
 				}
 				
 			}
-			
-			
-			
-			
 		}
 
 		
@@ -136,7 +138,7 @@ function get_ai_assistant_chat_v2_nat2json_step3($inputArray = NULL, $options = 
 	$diseases = $inputArray['Answers']['query']['disease'];
 	if (is_string($diseases)){
 		
-		if (($diseases == 'none') || ($diseases == '')){
+		if (isBadDisease($diseases)){
 			$diseases = array();
 			
 			$results['Error'] = "There is no disease available. Please revise your question by including disease.";
@@ -191,6 +193,7 @@ function get_ai_assistant_chat_v2_nat2json_step3($inputArray = NULL, $options = 
 			return $results;
 		}
 	}
+	
 
 	$options['img_width'] 		= abs(intval($options['img_width']));
 	$options['img_height'] 		= abs(intval($options['img_height']));
@@ -199,8 +202,13 @@ function get_ai_assistant_chat_v2_nat2json_step3($inputArray = NULL, $options = 
 
 
 	$options['yscale']	= $inputArray['Answers']['Action for query results']['scRNA-Seq']['plot options']['layout'];
-
-	$results['json']['var_col'] = '';
+	
+	
+	if ($BXAF_CONFIG['SETTINGS']['data']['by-disease'][$selectedDiseaseLowerCase]['Download_From_CZI']){
+		$results['json']['var_col'] = 'feature_name';
+	} else {
+		$results['json']['var_col'] = '';	
+	}
 
 	//Plot Type
 	if (true){
@@ -294,12 +302,51 @@ function get_ai_assistant_chat_v2_nat2json_step3($inputArray = NULL, $options = 
 
 	//Genes
 	if (true){
+
 		$genes = $inputArray['Answers']['Action for query results']['scRNA-Seq']['plot options']['gene'];
 		if (is_array($genes)){
-			$results['json']['genes'] = $genes;
+			
+			$genes = array_filter($genes, 'trim');
+			$genes = array_unique($genes);
+
+			if (array_size($genes) > 0){
+				
+				
+				foreach($genes as $tempKey => $currentGene){
+					$currentGene = trim_x($currentGene);
+					
+					if (!isBadGene($currentGene)){
+						$results['json']['genes'][] = $currentGene;
+					}
+				}
+				
+				if (!isset($results['json']['genes'])){
+					$results['Error'] 	= "The language model returns invalid genes. Please try again with a different model.";
+					return $results;
+				}
+				
+			} else {
+				$results['json']['genes'] = array();
+			}
+			
 		} else {
-			$results['json']['genes'] = array(trim_x($genes));
+			$genes = trim_x($genes);
+			
+			if ($genes != ''){
+				
+				if (!isBadGene($genes)){
+					$results['json']['genes'] = array($genes);
+				}
+			} else {
+				$results['json']['genes'] = array();
+			}
 		}
+		
+		
+		if (!isset($results['json']['genes'])){
+			$results['json']['genes'] = array();	
+		}
+		
 	}
 
 
@@ -324,6 +371,64 @@ function get_ai_assistant_chat_v2_nat2json_step3($inputArray = NULL, $options = 
 			}
 		}
 	}
+	
+	
+	if (in_array($results['json']['plot'], array('violin', 'dotplot', 'heatmap'))){
+		
+		if (array_size($results['json']['genes']) < 1){
+			$results['Error'] 	= "The plot requires at least one gene to generate, however the language model does not return any gene. Please try again with different language model.";
+			return $results;
+		}
+	
+		
+		if (array_size($results['json']['groups']) < 1){
+			$results['Error'] 	= "The plot requires at least one group to generate, however the language model does not return any group. Please try again with different language model.";
+			return $results;
+		}
+	}
+	
+	
+	if ($results['json']['plot'] == 'stackbar'){
+		
+		if (array_size($results['json']['groups']) < 2){
+			
+			if (array_size($BXAF_CONFIG['SETTINGS']['data']['by-disease'][$selectedDiseaseLowerCase]['Project_Column_Mapping']) == 2){
+				
+				foreach($BXAF_CONFIG['SETTINGS']['data']['by-disease'][$selectedDiseaseLowerCase]['Project_Column_Mapping'] as $tempKey => $currentGroup){
+					$currentGroup = trim_x($currentGroup);
+					
+					if ($currentGroup != ''){
+						$results['json']['groups'][$currentGroup] = array();
+					}
+				}
+				
+			} else {
+				$results['Error'] 	= "The plot requires at least one group to generate, however the language model does not return any group. Please try again with different language model.";
+				return $results;
+			}
+			
+		}
+	}
+	
+	
+	if ($results['json']['plot'] == 'embedding'){
+		
+		if (array_size($results['json']['reductions']) < 1){
+			$results['Error'] 	= "The plot requires at least one reduction to generate, however the language model does not return any reduction. Please try again with different language model.";
+			return $results;
+		}
+		
+		
+		if ((array_size($results['json']['genes']) < 1) && (array_size($results['json']['groups']) < 1)){
+			
+			$results['Error'] 	= "The plot requires at least one gene and one group to generate, however the language model does not return any gene or group. Please try again with different language model.";
+			return $results;
+		}
+	}
+	
+	
+	
+	
 
 	//Other parameters
 	if (true){
@@ -355,7 +460,12 @@ function get_ai_assistant_chat_v2_nat2json_step4($json = array(), $debug = false
 	
 	$json_input			= json_encode($json);
 
-	$cmd_results	= trim_x(get_ai_assistant_command_from_database(2, $json_input));
+	
+	if ($BXAF_CONFIG['plotH5ad2_Cache_Enable']){
+		$cmd_results	= trim_x(get_ai_assistant_command_from_database(2, $json_input));
+	} else {
+		$cmd_results 	= '';	
+	}
 	
 	
 	if ($cmd_results == ''){
@@ -391,8 +501,6 @@ function get_ai_assistant_chat_v2_nat2json_step4($json = array(), $debug = false
 		$source			= 'executed';
 		
 		
-		
-
 		if ($cmd_results != ''){
 			save_ai_assistant_command_to_database(2, $json_input, $cmd_results);
 		}
@@ -417,7 +525,29 @@ function get_ai_assistant_chat_v2_nat2json_step4($json = array(), $debug = false
 	
 }
 
+function isBadGene($gene = ''){
+	
+	$gene = trim_x($gene);
+	
+	if ($gene == '') return true;
+	
+	if (stripos($gene, 'TOP10') === 0) return true;
+	if (stripos($gene, 'top 10') !== FALSE) return true;
+	if (strtolower($gene) == 'none') return true;
+	if (stripos($gene, '..') !== FALSE) return true;
+	
+	return false;
+}
 
+function isBadDisease($disease = ''){
+	
+	$disease = trim_x($disease);
+	
+	if ($disease == '') return true;
+	if (strtolower($disease) == 'none') return true;
 
+	
+	return false;
+}
 
 ?>

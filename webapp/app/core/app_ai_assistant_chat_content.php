@@ -82,6 +82,8 @@ echo "<div class='row' id='main_container'>";
 			echo "<p>{$BXAF_CONFIG['MESSAGE'][$currentTable]['General']['Supported_Disease_Message']}<br/>";
 				echo implode_x(", ", array_keys($BXAF_CONFIG['SETTINGS']['data']['By-Disease']));
 			echo "</p>";
+			
+			echo "<p><a href='app_ai_assistant_example.php'>" . printFontAwesomeIcon("far fa-question-circle") . " {$BXAF_CONFIG['MESSAGE'][$currentTable]['General']['More_Examples']}</a></p>";
 
 			echo "</div>";
           echo "</div>";
@@ -94,7 +96,7 @@ echo "<div class='row' id='main_container'>";
           echo "<div class='row'>
                   <div class='col-12 chat-inputs-area-inner'>
                     <div class='row chat-inputs-container d-flex align-items-center'>
-                      	<textarea name='query_box' id='query_box' class='col-11' placeholder='Please enter your question.' rows='4'></textarea>
+                      	<textarea name='query_box' id='query_box' class='col-11' placeholder='Please enter your question.' rows='4'>{$query}</textarea>
 						<input id='last_question' type='hidden' value=''/>
 
 						<div class='col-1'>
@@ -225,6 +227,9 @@ $(document).ready(function(){
 		}
 	});
 
+	<?php if ($query != ''){ ?>
+		$("#submit_query").click();
+	<?php } ?>
 
 
 });

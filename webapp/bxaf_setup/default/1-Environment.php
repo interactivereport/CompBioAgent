@@ -30,5 +30,19 @@ $BXAF_CONFIG_CUSTOM['CELLXGENE_plotH5ad2']				= '/cellxgene_VIP/bin/plotH5ad.sh'
 $BXAF_CONFIG_CUSTOM['CURL']['Bin']						= '/bin/curl';
 
 
+//LLM cache
+//If enabled, the cached response will be returned.
+$BXAF_CONFIG_CUSTOM['LLM_Cache_Enable']					= true;
+
+
+//PlotH5ad cache
+//If enabled, the cached response will be returned.
+$BXAF_CONFIG_CUSTOM['plotH5ad2_Cache_Enable']			= true;
+
+
+//Enabled to display the log information
+$BXAF_CONFIG_CUSTOM['Debug']							= false;
+
+
 
 ?>
