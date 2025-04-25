@@ -1,6 +1,6 @@
 # ![CompBioAgent](https://github.com/interactivereport/CompBioAgent/blob/main/CompBioAgent_logo.png)
 
-Live Demo: https://celldepot.bxgenomics.com/compbioagent/
+Live Demo: https://apps.bxgenomics.com/compbioagent/
 
 Question: https://bioinforx.com/contact
 
